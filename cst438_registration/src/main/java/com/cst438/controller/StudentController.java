@@ -33,5 +33,17 @@ public class StudentController {
 		} 
 		return false;
 	}
+	
+	@PostMapping("/deleteStudent")
+	public Boolean deleteStudent(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
+		
+		Student check = studentRepository.findByEmail(email);
+		if (check != null) {
+			studentRepository.delete(check);
+			return true; 
+		} 
+		return false;
+	}
+	
 
 }
