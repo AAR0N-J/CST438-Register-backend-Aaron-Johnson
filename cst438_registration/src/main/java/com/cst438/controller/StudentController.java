@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cst438.domain.Student;
 import com.cst438.domain.StudentRepository;
 
-
-
-
 @RestController
 @CrossOrigin
 public class StudentController {
@@ -48,10 +45,12 @@ public class StudentController {
 	}
 	
 	@PostMapping("/updateStudent")
-	public Boolean updateStudent(@RequestParam("studentId") int student_id) {
+	public Boolean updateStudent(@RequestParam("studentId") int student_id, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
 		
 		Student student = studentRepository.findByID(student_id);
 		if (student != null) {
+			student.setEmail(email);
+			student.setStatusCode(statusCode);
 			return true; 
 		} 
 		System.out.println("Student not found");
