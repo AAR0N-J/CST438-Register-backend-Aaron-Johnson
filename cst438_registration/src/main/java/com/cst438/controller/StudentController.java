@@ -19,7 +19,7 @@ public class StudentController {
 	@Autowired
 	StudentRepository studentRepository;
 	
-	@PostMapping("/student")
+	@PostMapping("/newStudent")
 	public Boolean addNewStudent(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
 		
 		Student check = studentRepository.findByEmail(email);
@@ -31,18 +31,45 @@ public class StudentController {
 			studentRepository.save(newStudent);
 			return true; 
 		} 
+		System.out.println("Student already exists");
 		return false;
 	}
 	
 	@PostMapping("/deleteStudent")
-	public Boolean deleteStudent(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
+	public Boolean deleteStudent(@RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
 		
-		Student check = studentRepository.findByEmail(email);
-		if (check != null) {
-			studentRepository.delete(check);
+		Student student = studentRepository.findByEmail(email);
+		if (student != null) {
+			studentRepository.delete(student);
 			return true; 
 		} 
+		System.out.println("Student not found");
 		return false;
+	}
+	
+	@PostMapping("/updateStudent")
+	public Boolean updateStudent(@RequestParam("studentId") int student_id) {
+		
+		Student student = studentRepository.findByID(student_id);
+		if (student != null) {
+			return true; 
+		} 
+		System.out.println("Student not found");
+		return false;
+	}
+	
+	@GetMapping("/listStudent")
+	public Iterable<Student> listStudent() {
+		return studentRepository.findAll();
+	}
+	
+	@GetMapping("/getStudent")
+	public Student getStudent(@RequestParam("studentId") int student_id) {
+		
+		Student student = studentRepository.findByID(student_id);
+		if (student != null) return student; 
+		System.out.println("Student not found");
+		return null;
 	}
 	
 
