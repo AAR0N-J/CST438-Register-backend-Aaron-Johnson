@@ -3,9 +3,6 @@ package com.cst438;
 import static com.cst438.test.utils.TestUtils.fromJsonString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +12,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.cst438.controller.StudentController;
 import com.cst438.domain.Student;
 
 
@@ -26,6 +22,7 @@ public class JunitTestStudent {
 	@Autowired
 	private MockMvc mvc;
 
+	@SuppressWarnings("null")
 	@Test
 	public void addNewStudent() throws Exception {
 		MockHttpServletResponse response;
@@ -41,6 +38,20 @@ public class JunitTestStudent {
 
 		String result = response.getContentAsString();
 		assertEquals("true",result);
+		
+		MockHttpServletResponse response1 = null;
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/newStudent/12346")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		assertEquals(200,response1.getStatus());
+
+
+		String result1 = response1.getContentAsString();
+		assertEquals("true",result1);
 		
 	}
 	
@@ -67,7 +78,7 @@ public class JunitTestStudent {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
-					.post("/updateStudent/12345?enrolled")
+					.post("/updateStudent/12346?enrolled")
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
@@ -86,7 +97,7 @@ public class JunitTestStudent {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
-					.post("/getStudent/12345")
+					.post("/getStudent/12346")
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
@@ -95,6 +106,23 @@ public class JunitTestStudent {
 
 		Student result = fromJsonString(response.getContentAsString(),Student.class);
 		assertEquals(12345,result.getStudent_id());
+		
+	}
+	
+	@Test
+	public void getAllStudent() throws Exception {
+		MockHttpServletResponse response;
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/getAllStudent")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		assertEquals(200,response.getStatus());
+
+		int result =response.getContentLength();
+		assertNotEquals(0,result);
 		
 	}
 }
