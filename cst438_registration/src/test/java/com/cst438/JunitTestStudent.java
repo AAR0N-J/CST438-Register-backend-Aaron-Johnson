@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cst438.controller.StudentController;
+import com.cst438.domain.Student;
 
 
 @SpringBootTest
@@ -28,26 +29,35 @@ public class JunitTestStudent {
 	@Test
 	public void addNewStudent() throws Exception {
 		MockHttpServletResponse response;
-		response = mvc.perform(post("/newStudent").
-                          accept(MediaType.APPLICATION_JSON)).
-                          andReturn().
-                          getResponse();
-		StudentController s = fromJsonString(
-                          response.getContentAsString(), 
-                          StudentController.class);
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/newStudent/12345")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		assertEquals(200,response.getStatus());
+
+
+		String result = response.getContentAsString();
+		assertEquals("true",result);
 		
 	}
 	
 	@Test
 	public void deleteStudent() throws Exception {
 		MockHttpServletResponse response;
-		response = mvc.perform(post("/deleteStudent").
-                          accept(MediaType.APPLICATION_JSON)).
-                          andReturn().
-                          getResponse();
-		StudentController s = fromJsonString(
-                          response.getContentAsString(), 
-                          StudentController.class);
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/deleteStudent/12345")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		assertEquals(200,response.getStatus());
+
+		String result = response.getContentAsString();
+		assertEquals("true",result);
 		
 		
 	}
@@ -55,42 +65,36 @@ public class JunitTestStudent {
 	@Test
 	public void updateStudent() throws Exception {
 		MockHttpServletResponse response;
-		response = mvc.perform(post("/updateStudent").
-                          accept(MediaType.APPLICATION_JSON)).
-                          andReturn().
-                          getResponse();
-		StudentController s = fromJsonString(
-                          response.getContentAsString(), 
-                          StudentController.class);
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/updateStudent/12345?enrolled")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
 		
+		assertEquals(200,response.getStatus());
+
+		String result = response.getContentAsString();
+		assertEquals("true",result);
 		
 	}
 	
-	@Test
-	public void getAllStudents() throws Exception {
-		MockHttpServletResponse response;
-		response = mvc.perform(post("/listStudent").
-                          accept(MediaType.APPLICATION_JSON)).
-                          andReturn().
-                          getResponse();
-		StudentController s = fromJsonString(
-                          response.getContentAsString(), 
-                          StudentController.class);
-		
-		
-	}
+
 	
 	@Test
 	public void getStudent() throws Exception {
 		MockHttpServletResponse response;
-		response = mvc.perform(post("/getStudent").
-                          accept(MediaType.APPLICATION_JSON)).
-                          andReturn().
-                          getResponse();
-		StudentController s = fromJsonString(
-                          response.getContentAsString(), 
-                          StudentController.class);
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/getStudent/12345")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
 		
+		assertEquals(200,response.getStatus());
+
+		Student result = fromJsonString(response.getContentAsString(),Student.class);
+		assertEquals(12345,result.getStudent_id());
 		
 	}
 }
