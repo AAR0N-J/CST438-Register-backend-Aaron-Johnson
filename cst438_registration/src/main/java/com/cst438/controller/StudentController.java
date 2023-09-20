@@ -1,9 +1,13 @@
 package com.cst438.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cst438.domain.Student;
@@ -17,7 +21,7 @@ public class StudentController {
 	StudentRepository studentRepository;
 	
 	@PostMapping("/newStudent")
-	public Boolean addNewStudent(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
+	public Boolean addNewStudent(@PathVariable("name") String name, @PathVariable("email") String email, @PathVariable("status_code") int statusCode ) {
 		
 		Student check = studentRepository.findByEmail(email);
 		if (check == null) {
@@ -32,8 +36,8 @@ public class StudentController {
 		return false;
 	}
 	
-	@PostMapping("/deleteStudent")
-	public Boolean deleteStudent(@RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
+	@PostMapping("/deleteStudent/{student_id}")
+	public Boolean deleteStudent(@PathVariable("email") String email, @PathVariable("status_code") int statusCode, @RequestParam("something") Optional<String> something) {
 		
 		Student student = studentRepository.findByEmail(email);
 		if (student != null) {
@@ -44,8 +48,8 @@ public class StudentController {
 		return false;
 	}
 	
-	@PostMapping("/updateStudent")
-	public Boolean updateStudent(@RequestParam("studentId") int student_id, @RequestParam("email") String email, @RequestParam("status_code") int statusCode ) {
+	@PutMapping("/updateStudent")
+	public Boolean updateStudent(@PathVariable("studentId") int student_id, @PathVariable("email") String email, @PathVariable("status_code") int statusCode ) {
 		
 		Student student = studentRepository.findByID(student_id);
 		if (student != null) {
@@ -58,12 +62,12 @@ public class StudentController {
 	}
 	
 	@GetMapping("/listStudent")
-	public Iterable<Student> listStudent() {
+	public Iterable<Student> getAllStudents() {
 		return studentRepository.findAll();
 	}
 	
-	@GetMapping("/getStudent")
-	public Student getStudent(@RequestParam("studentId") int student_id) {
+	@GetMapping("/getStudent/{studentId}")
+	public Student getStudent(@PathVariable("studentId") int student_id) {
 		
 		Student student = studentRepository.findByID(student_id);
 		if (student != null) return student; 
