@@ -54,10 +54,10 @@ public class StudentController {
 		return false;
 	}
 	
-	@PutMapping("/updateStudent")
-	public Boolean updateStudent(@PathVariable("studentId") int student_id, @PathVariable String email, @PathVariable("status_code") int statusCode ) {
+	@PutMapping("/updateStudent/{student_id}")
+	public Boolean updateStudent(@PathVariable("studentId") int student_id, @PathVariable("email") String email, @PathVariable("status_code") int statusCode ) {
 		
-		Student student = studentRepository.findByID(student_id);
+		Student student = studentRepository.findByStudent_id(student_id);
 		if (student != null) {
 			student.setEmail(email);
 			student.setStatusCode(statusCode);
@@ -76,7 +76,7 @@ public class StudentController {
 	@GetMapping("/getStudent/{studentId}")
 	public Student getStudent(@PathVariable("studentId") int student_id) {
 		
-		Student student = studentRepository.findByID(student_id);
+		Student student = studentRepository.findByStudent_id(student_id);
 		if (student != null) return student; 
 		System.out.println("Student not found");
 		return null;
