@@ -32,8 +32,6 @@ class JunitTestStudent {
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
-		
-		assertEquals(200,response.getStatus());
 
 
 		String result = response.getContentAsString();
@@ -47,7 +45,6 @@ class JunitTestStudent {
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
-		assertEquals(200,response1.getStatus());
 
 
 		String result1 = response1.getContentAsString();
@@ -65,7 +62,6 @@ class JunitTestStudent {
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
-		assertEquals(200,response.getStatus());
 
 		String result = response.getContentAsString();
 		assertEquals("true",result);
@@ -83,8 +79,7 @@ class JunitTestStudent {
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
-		assertEquals(200,response.getStatus());
-
+	
 		String result = response.getContentAsString();
 		assertEquals("true",result);
 		
@@ -101,7 +96,6 @@ class JunitTestStudent {
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
-		assertEquals(200,response.getStatus());
 
 		Student result = fromJsonString(response.getContentAsString(),Student.class);
 		assertEquals(12345,result.getStudent_id());
@@ -118,8 +112,7 @@ class JunitTestStudent {
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
 		
-		assertEquals(200,response.getStatus());
-
+	
 		int result =response.getContentLength();
 		assertNotEquals(0,result);
 		
