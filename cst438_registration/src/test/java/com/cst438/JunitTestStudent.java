@@ -17,14 +17,14 @@ import com.cst438.domain.Student;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class JunitTestStudent {
+class JunitTestStudent {
 
 	@Autowired
 	private MockMvc mvc;
 
-	@SuppressWarnings("null")
-	@Test
-	public void addNewStudent() throws Exception {
+    @SuppressWarnings("null")
+    @Test
+    void addNewStudent() throws Exception {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
@@ -54,9 +54,9 @@ public class JunitTestStudent {
 		assertEquals("true",result1);
 		
 	}
-	
-	@Test
-	public void deleteStudent() throws Exception {
+
+    @Test
+    void deleteStudent() throws Exception {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
@@ -72,9 +72,9 @@ public class JunitTestStudent {
 		
 		
 	}
-	
-	@Test
-	public void updateStudent() throws Exception {
+
+    @Test
+    void updateStudent() throws Exception {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
@@ -89,11 +89,10 @@ public class JunitTestStudent {
 		assertEquals("true",result);
 		
 	}
-	
 
-	
-	@Test
-	public void getStudent() throws Exception {
+
+    @Test
+    void getStudent() throws Exception {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
@@ -108,9 +107,9 @@ public class JunitTestStudent {
 		assertEquals(12345,result.getStudent_id());
 		
 	}
-	
-	@Test
-	public void getAllStudent() throws Exception {
+
+    @Test
+    void getAllStudent() throws Exception {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
