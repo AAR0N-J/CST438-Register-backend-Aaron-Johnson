@@ -28,7 +28,7 @@ class JunitTestStudent {
 		MockHttpServletResponse response;
 		response = mvc.perform(
 				MockMvcRequestBuilders
-					.post("/newStudent/12345")
+					.post("/newStudent/{'student_id': 12345, 'email': 'test@csumb.edu', 'name': 'test', 'status_code': 'enrolled' ")
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();

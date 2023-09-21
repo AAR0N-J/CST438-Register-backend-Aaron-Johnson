@@ -29,6 +29,7 @@ public class StudentController {
 		Student check = studentRepository.findByEmail(studentDTO.email());
 		if (check == null) {
 			Student newStudent = new Student();
+			newStudent.setStudent_id(studentDTO.student_id());
 			newStudent.setName(studentDTO.name());
 			newStudent.setEmail(studentDTO.email());
 			newStudent.setStatusCode(studentDTO.status_code());
