@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 @Service
 @ConditionalOnProperty(prefix="gradebook", name="service", havingValue = "default", matchIfMissing=true)
 public class GradebookServiceDefault implements GradebookService {
-	
+
+	@Override
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 	}
-	
+
 }

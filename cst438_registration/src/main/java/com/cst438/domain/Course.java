@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Course {
-	
+
 	@Id
 	private int course_id;
 	private int year;
@@ -20,7 +20,7 @@ public class Course {
 	private String instructor;
 	private Date start;
 	private Date end;
-	
+
 	public Course() {
 		super();
 	}

@@ -1,30 +1,34 @@
 package com.cst438.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="student")
 public class Student {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int student_id;
+	@Column(name = "student_id", nullable = false)
+	private int studentId;
 	private String name;
 	private String email;
 	private int statusCode;
 	private String status;
-	
+
 	public Student() {
 		super();
 	}
-	
+
 	public int getStudent_id() {
-		return student_id;
+		return studentId;
 	}
 	public void setStudent_id(int student_id) {
-		this.student_id = student_id;
+		this.studentId = student_id;
 	}
 	public String getName() {
 		return name;
@@ -52,7 +56,7 @@ public class Student {
 	}
 	@Override
 	public String toString() {
-		return "Student [student_id=" + student_id + ", name=" + name + ", email=" + email + ", statusCode="
+		return "Student [student_id=" + studentId + ", name=" + name + ", email=" + email + ", statusCode="
 				+ statusCode + ", status=" + status + "]";
 	}
 

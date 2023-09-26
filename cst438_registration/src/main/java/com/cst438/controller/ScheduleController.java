@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,28 +23,28 @@ import com.cst438.domain.Student;
 import com.cst438.domain.StudentRepository;
 import com.cst438.service.GradebookService;
 @RestController
-@CrossOrigin 
+@CrossOrigin
 public class ScheduleController {
-	
+
 	@Autowired
 	CourseRepository courseRepository;
-	
+
 	@Autowired
 	StudentRepository studentRepository;
-	
+
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
-	
+
 	@Autowired
 	GradebookService gradebookService;
 	/*
 	 * get current schedule for student.
 	 */
 	@GetMapping("/schedule")
-	public ScheduleDTO[] getSchedule( @RequestParam("year") int year, @RequestParam("semester") String semester ) {
+	public ScheduleDTO[] getSchedule( @RequestParam int year, @RequestParam String semester ) {
 		System.out.println("/schedule called.");
-		String student_email = "test@csumb.edu";   // student's email 
-		
+		String student_email = "test@csumb.edu";   // student's email
+
 		Student student = studentRepository.findByEmail(student_email);
 		if (student != null) {
 			System.out.println("/schedule student "+student.getName()+" "+student.getStudent_id());
@@ -60,12 +60,12 @@ public class ScheduleController {
 	 */
 	@PostMapping("/schedule/course/{id}")
 	@Transactional
-	public ScheduleDTO addCourse( @PathVariable int id  ) { 
-		String student_email = "test@csumb.edu";   // student's email 
+	public ScheduleDTO addCourse( @PathVariable int id  ) {
+		String student_email = "test@csumb.edu";   // student's email
 		Student student = studentRepository.findByEmail(student_email);
 		Course course  = courseRepository.findById(id).orElse(null);
 		// student.status
-		// = 0  ok to register.  != 0 registration is on hold.		
+		// = 0  ok to register.  != 0 registration is on hold.
 		if (student!= null && course!=null && student.getStatusCode()==0) {
 			// TODO check that today's date is not past add deadline for the course.
 			Enrollment enrollment = new Enrollment();
@@ -80,7 +80,7 @@ public class ScheduleController {
 			return result;
 		} else {
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Course_id invalid or student not allowed to register for the course.  "+id);
-		}	
+		}
 	}
 	/*
 	 * drop a course from student schedule
@@ -88,7 +88,7 @@ public class ScheduleController {
 	@DeleteMapping("/schedule/{enrollment_id}")
 	@Transactional
 	public void dropCourse(  @PathVariable int enrollment_id  ) {
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = "test@csumb.edu";   // student's email
 		// TODO  check that today's date is not past deadline to drop course.
 		Enrollment enrollment = enrollmentRepository.findById(enrollment_id).orElse(null);
 		// verify that student is enrolled in the course.
@@ -96,13 +96,13 @@ public class ScheduleController {
 			// OK.  drop the course.
 			 enrollmentRepository.delete(enrollment);
 		} else {
-			// something is not right with the enrollment.  
+			// something is not right with the enrollment.
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+enrollment_id);
 		}
 	}
-	
-	/* 
-	 * helper method to transform course, enrollment, student entities into 
+
+	/*
+	 * helper method to transform course, enrollment, student entities into
 	 * a an instances of ScheduleDTO to return to front end.
 	 * This makes the front end less dependent on the details of the database.
 	 */
@@ -114,7 +114,7 @@ public class ScheduleController {
 		}
 		return result;
 	}
-	
+
 	private ScheduleDTO createSchedule(Enrollment e) {
 		Course c = e.getCourse();
 		ScheduleDTO dto = new ScheduleDTO(
@@ -129,7 +129,7 @@ public class ScheduleController {
 		   c.getStart().toString(),
 		   c.getEnd().toString(),
 		   e.getCourseGrade());
-		   
+
 		return dto;
 	}
 }
