@@ -1,6 +1,9 @@
 package com.cst438;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.cst438.domain.ScheduleDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/* 
- * Example of using Junit 
+/*
+ * Example of using Junit
  * Mockmvc is used to test a simulated REST call to the RestController
  */
 @SpringBootTest
@@ -30,7 +33,7 @@ class JunitTestSchedule {
      */
     @Test
     void addCourse()  throws Exception {
-		
+
 		MockHttpServletResponse response;
 
 		response = mvc.perform(
@@ -39,36 +42,36 @@ class JunitTestSchedule {
 			      .contentType(MediaType.APPLICATION_JSON)
 			      .accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
-		
-		// verify that return status = OK (value 200) 
+
+		// verify that return status = OK (value 200)
 		assertEquals(200, response.getStatus());
-		
+
 		// verify that returned data has non zero primary key
 		ScheduleDTO result = fromJsonString(response.getContentAsString(), ScheduleDTO.class);
 		assertNotEquals( 0  , result.id());
-		
-		
-		// do http GET for student schedule 
+
+
+		// do http GET for student schedule
 		response = mvc.perform(
 				MockMvcRequestBuilders
 			      .get("/schedule?year=2021&semester=Fall")
 			      .accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
-		
-		// verify that return status = OK (value 200) 
+
+		// verify that return status = OK (value 200)
 		assertEquals(200, response.getStatus());
-		
-		// verify that returned data contains the added course 
+
+		// verify that returned data contains the added course
 		ScheduleDTO[] dto_list = fromJsonString(response.getContentAsString(), ScheduleDTO[].class);
-		
-		boolean found = false;		
+
+		boolean found = false;
 		for (ScheduleDTO sc : dto_list) {
 			if (sc.courseId() == 40442) {
 				found = true;
 			}
 		}
 		assertEquals(true, found, "Added course not in updated schedule.");
-		
+
 	}
 
     /*
@@ -76,9 +79,9 @@ class JunitTestSchedule {
      */
     @Test
     void dropCourse()  throws Exception {
-		
+
 		MockHttpServletResponse response;
-		
+
 		response = mvc.perform(
 				MockMvcRequestBuilders
 			      .get("/schedule?year=2020&semester=Fall")
@@ -97,10 +100,10 @@ class JunitTestSchedule {
 				MockMvcRequestBuilders
 			      .delete("/schedule/1"))
 				.andReturn().getResponse();
-		
-		// verify that return status = OK (value 200) 
+
+		// verify that return status = OK (value 200)
 		assertEquals(200, response.getStatus());
-	
+
 		response = mvc.perform(
 				MockMvcRequestBuilders
 			      .get("/schedule?year=2020&semester=Fall")
@@ -114,14 +117,8 @@ class JunitTestSchedule {
 		}
 		assertFalse(found);
 	}
-		
-	private static String asJsonString(final Object obj) {
-		try {
-			return new ObjectMapper().writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+
+	
 
 	private static <T> T  fromJsonString(String str, Class<T> valueType ) {
 		try {

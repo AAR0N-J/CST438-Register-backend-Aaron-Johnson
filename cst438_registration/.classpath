@@ -54,5 +54,34 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/tiki/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/2.7.15-SNAPSHOT/spring-boot-test-autoconfigure-2.7.15-SNAPSHOT.jar" sourcepath="/Users/tiki/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/2.7.15-SNAPSHOT/spring-boot-test-autoconfigure-2.7.15-SNAPSHOT-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="test" value="true"/>
+			<attribute name="maven.groupId" value="org.springframework.boot"/>
+			<attribute name="maven.artifactId" value="spring-boot-test-autoconfigure"/>
+			<attribute name="maven.version" value="2.7.15-SNAPSHOT"/>
+			<attribute name="maven.scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/tiki/.m2/repository/org/springframework/boot/spring-boot-test/2.7.15-SNAPSHOT/spring-boot-test-2.7.15-SNAPSHOT.jar" sourcepath="/Users/tiki/.m2/repository/org/springframework/boot/spring-boot-test/2.7.15-SNAPSHOT/spring-boot-test-2.7.15-SNAPSHOT-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="test" value="true"/>
+			<attribute name="maven.groupId" value="org.springframework.boot"/>
+			<attribute name="maven.artifactId" value="spring-boot-test"/>
+			<attribute name="maven.version" value="2.7.15-SNAPSHOT"/>
+			<attribute name="maven.scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/tiki/.m2/repository/org/springframework/spring-beans/5.3.29/spring-beans-5.3.29.jar" sourcepath="/Users/tiki/.m2/repository/org/springframework/spring-beans/5.3.29/spring-beans-5.3.29-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.springframework"/>
+			<attribute name="maven.artifactId" value="spring-beans"/>
+			<attribute name="maven.version" value="5.3.29"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

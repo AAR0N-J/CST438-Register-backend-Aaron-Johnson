@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.cst438.domain.FinalGradeDTO;
-import com.cst438.domain.Enrollment;
-import com.cst438.domain.EnrollmentDTO;
 import com.cst438.domain.EnrollmentRepository;
+import com.cst438.domain.FinalGradeDTO;
 
 @Service
 @ConditionalOnProperty(prefix = "gradebook", name = "service", havingValue = "rest")
@@ -28,12 +26,12 @@ public class GradebookServiceREST implements GradebookService {
 
 	@Override
 	public void enrollStudent(String student_email, String student_name, int course_id) {
-		System.out.println("Start Message "+ student_email +" " + course_id); 
-	
+		System.out.println("Start Message "+ student_email +" " + course_id);
+
 		// TODO use RestTemplate to send message to gradebook service
-		
+
 	}
-	
+
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
 	/*
@@ -43,7 +41,7 @@ public class GradebookServiceREST implements GradebookService {
 	@Transactional
 	public void updateCourseGrades( @RequestBody FinalGradeDTO[] grades, @PathVariable int course_id) {
 		System.out.println("Grades received "+grades.length);
-		
+
 		//TODO update grades in enrollment records with grades received from gradebook service
 	}
 }
