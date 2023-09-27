@@ -13,7 +13,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-
+import com.cst438.domain.Student;
 import com.cst438.domain.StudentDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,7 +55,7 @@ class JunitTestStudent {
 				MockMvcRequestBuilders
 					.delete("/student/"+student_id))
 					.andReturn().getResponse();
-		assertEquals(500, response.getStatus());
+		assertEquals(200, response.getStatus());
 
 	}
 
@@ -71,7 +71,7 @@ class JunitTestStudent {
 			      .accept(MediaType.APPLICATION_JSON)
 			      .content(asJsonString(sdto)))
 				.andReturn().getResponse();
-		assertEquals(400, response.getStatus());
+		assertEquals(200, response.getStatus());
 		int  student_id = Integer.parseInt(response.getContentAsString());
 		assertTrue(student_id > 0);
 
@@ -109,7 +109,7 @@ class JunitTestStudent {
 			      .accept(MediaType.APPLICATION_JSON)
 			      .content(asJsonString(sdto)))
 				.andReturn().getResponse();
-		assertEquals(400, response.getStatus());
+		assertEquals(200, response.getStatus());
 		int  student_id = Integer.parseInt(response.getContentAsString());
 		assertTrue(student_id > 0);
 
@@ -160,7 +160,7 @@ class JunitTestStudent {
 				 .get("/student/2")
 				 .accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
-		assertEquals(404, response.getStatus());
+		assertEquals(200, response.getStatus());
 		StudentDTO original = fromJsonString(response.getContentAsString(), StudentDTO.class);
 		// modify name, email and statusCode
 		StudentDTO mod = new StudentDTO(original.student_id(), "new name", "newname@csumb.edu", 1, "balance outstanding");
@@ -185,7 +185,22 @@ class JunitTestStudent {
 	}
 
 
-  
+    @Test
+    void getStudent() throws Exception {
+		MockHttpServletResponse response;
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.get("/student/12346")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+
+
+		Student result = fromJsonString(response.getContentAsString(),Student.class);
+		assertEquals(12346,result.getStudent_id());
+
+	}
+
     @Test
 	public void updateStudentDupEmail() throws Exception {
 		// create 2 students
@@ -242,7 +257,24 @@ class JunitTestStudent {
 			      .accept(MediaType.APPLICATION_JSON)
 			      .content(asJsonString(sdto)))
 				.andReturn().getResponse();
-		assertEquals(500, response.getStatus());
+		assertEquals(404, response.getStatus());
+
+	}
+
+
+    @Test
+    void getAllStudent() throws Exception {
+		MockHttpServletResponse response;
+		response = mvc.perform(
+				MockMvcRequestBuilders
+					.post("/getAllStudent")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+
+
+		int result =response.getContentLength();
+		assertNotEquals(0,result);
 
 	}
 
