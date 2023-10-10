@@ -9,7 +9,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cst438.domain.Enrollment;
+import com.cst438.domain.EnrollmentDTO;
 import com.cst438.domain.EnrollmentRepository;
+import com.cst438.domain.FinalGradeDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -29,7 +33,13 @@ public class GradebookServiceMQ implements GradebookService {
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 		System.out.println("Start Message "+ student_email +" " + course_id);
 		// create EnrollmentDTO, convert to JSON string and send to gradebookQueue
-		// TODO
+		EnrollmentDTO enrollmentDTO = new EnrollmentDTO(0, student_email, student_name, course_id);
+
+	    // Convert the DTO to a JSON string (you'll need a JSON library like Jackson)
+	    String enrollmentJson = asJsonString(enrollmentDTO);
+
+	    // Send the JSON message to the gradebookQueue
+	    rabbitTemplate.convertAndSend("gradebookQueue", enrollmentJson);
 	}
 
 	@RabbitListener(queues = "registration-queue")
@@ -41,9 +51,22 @@ public class GradebookServiceMQ implements GradebookService {
 		 * entity and update the grade.
 		 */
 
-		// deserialize the string message to FinalGradeDTO[]
+		FinalGradeDTO[] grades = convertJsonToDTO(message);
 
-		// TODO
+	    if (grades != null) {
+	        for (FinalGradeDTO gradeDTO : grades) {
+	            // Find the student enrollment entity by email and course ID
+	            Enrollment enrollment = enrollmentRepository.findByEmailAndCourseId(gradeDTO.studentEmail(), gradeDTO.courseId());
+
+	            if (enrollment != null) {
+	                // Update the grade in the enrollment entity
+	                enrollment.setCourseGrade(gradeDTO.grade());
+
+	                // Save the updated enrollment entity to the database
+	                enrollmentRepository.save(enrollment);
+	            }
+	        }
+	    }
 
 	}
 
@@ -61,5 +84,15 @@ public class GradebookServiceMQ implements GradebookService {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	private FinalGradeDTO[] convertJsonToDTO(String json) {
+	    ObjectMapper objectMapper = new ObjectMapper();
+	    try {
+	        return objectMapper.readValue(json, FinalGradeDTO[].class);
+	    } catch (JsonProcessingException e) {
+	        // Handle the exception as needed
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 }
