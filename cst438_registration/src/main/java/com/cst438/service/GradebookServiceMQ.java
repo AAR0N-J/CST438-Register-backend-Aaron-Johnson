@@ -32,13 +32,9 @@ public class GradebookServiceMQ implements GradebookService {
 	@Override
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 		System.out.println("Start Message "+ student_email +" " + course_id);
-		// create EnrollmentDTO, convert to JSON string and send to gradebookQueue
+		
 		EnrollmentDTO enrollmentDTO = new EnrollmentDTO(0, student_email, student_name, course_id);
-
-	    // Convert the DTO to a JSON string (you'll need a JSON library like Jackson)
 	    String enrollmentJson = asJsonString(enrollmentDTO);
-
-	    // Send the JSON message to the gradebookQueue
 	    rabbitTemplate.convertAndSend("gradebookQueue", enrollmentJson);
 	}
 
@@ -50,24 +46,15 @@ public class GradebookServiceMQ implements GradebookService {
 		 * for each student grade in courseDTOG,  find the student enrollment
 		 * entity and update the grade.
 		 */
-
-		FinalGradeDTO[] grades = convertJsonToDTO(message);
-
-	    if (grades != null) {
-	        for (FinalGradeDTO gradeDTO : grades) {
-	            // Find the student enrollment entity by email and course ID
-	            Enrollment enrollment = enrollmentRepository.findByEmailAndCourseId(gradeDTO.studentEmail(), gradeDTO.courseId());
-
-	            if (enrollment != null) {
-	                // Update the grade in the enrollment entity
-	                enrollment.setCourseGrade(gradeDTO.grade());
-
-	                // Save the updated enrollment entity to the database
-	                enrollmentRepository.save(enrollment);
-	            }
-	        }
+		FinalGradeDTO[] finalGrades = fromJsonString(message, FinalGradeDTO[].class);
+	    
+	    for (FinalGradeDTO gradeDTO : finalGrades) {
+	        Enrollment enrollment = enrollmentRepository.findByEmailAndCourseId(gradeDTO.studentEmail(), gradeDTO.courseId());
+	        if (enrollment != null) {
+	            enrollment.setCourseGrade(gradeDTO.grade());
+	            enrollmentRepository.save(enrollment);
+	        } 
 	    }
-
 	}
 
 	private static String asJsonString(final Object obj) {
@@ -84,15 +71,5 @@ public class GradebookServiceMQ implements GradebookService {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-	private FinalGradeDTO[] convertJsonToDTO(String json) {
-	    ObjectMapper objectMapper = new ObjectMapper();
-	    try {
-	        return objectMapper.readValue(json, FinalGradeDTO[].class);
-	    } catch (JsonProcessingException e) {
-	        // Handle the exception as needed
-	        e.printStackTrace();
-	        return null;
-	    }
 	}
 }

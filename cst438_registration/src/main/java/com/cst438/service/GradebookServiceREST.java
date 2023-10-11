@@ -33,23 +33,8 @@ public class GradebookServiceREST implements GradebookService {
 	public void enrollStudent(String student_email, String student_name, int course_id) {
 		System.out.println("Start Message "+ student_email +" " + course_id);
 
-		 EnrollmentDTO enrollmentDTO = new EnrollmentDTO(0, student_email, student_name, course_id);
-
-		    // Define the URL for the Gradebook backend
-		    String gradebookUrl = "https://example.com/api/enroll";
-
-		    // Create HttpHeaders with the content type
-		    HttpHeaders headers = new HttpHeaders();
-		    headers.setContentType(MediaType.APPLICATION_JSON);
-
-		    // Create an HttpEntity with the EnrollmentDTO and headers
-		    HttpEntity<EnrollmentDTO> requestEntity = new HttpEntity<>(enrollmentDTO, headers);
-
-		    // Create a RestTemplate instance
-		    RestTemplate restTemplate = new RestTemplate();
-
-		    // Send the POST request and get the response as EnrollmentDTO
-		    EnrollmentDTO responseDTO = restTemplate.postForObject(gradebookUrl, requestEntity, EnrollmentDTO.class);
+		EnrollmentDTO enrollment = new EnrollmentDTO(0, student_email, student_name, course_id);
+		restTemplate.postForObject(gradebook_url+"/enrollment", enrollment, EnrollmentDTO.class);
 	}
 
 	@Autowired
@@ -63,15 +48,9 @@ public class GradebookServiceREST implements GradebookService {
 		System.out.println("Grades received "+grades.length);
 
 		for (FinalGradeDTO gradeDTO : grades) {
-	        // Assuming you have student ID in FinalGradeDTO, and assuming Enrollment entity has courseId and studentId fields.
-	        // You might need to adjust the code depending on your actual entity structure.
 	        Enrollment enrollment = enrollmentRepository.findByEmailAndCourseId(gradeDTO.studentEmail(), course_id);
-
 	        if (enrollment != null) {
-	            // Update the grade in the enrollment record
 	            enrollment.setCourseGrade(gradeDTO.grade());
-
-	            // Save the updated enrollment record to the database
 	            enrollmentRepository.save(enrollment);
 	        }
 		}
