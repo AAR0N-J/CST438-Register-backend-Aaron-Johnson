@@ -35,11 +35,11 @@ public class SeleniumTestStudent {
 
 	public static final String CHROME_DRIVER_FILE_LOCATION = "/Users/tiki/Documents/Software engineering/chromedriver-mac-x64/chromedriver";
 
-	public static final String URL = "http://localhost:3000";
+	public static final String URL = "http://localhost:3000/admin";
 
-	public static final String TEST_USER_EMAIL = "test@csumb.edu";
+	public static final String TEST_USER_EMAIL = "bob@csumb.edu";
 
-	public static final String TEST_NAME = "test";
+	public static final String TEST_NAME = "BOB MARLEY";
 
 	public static final int SLEEP_DURATION = 1000; // 1 second.
 
@@ -69,10 +69,7 @@ public class SeleniumTestStudent {
 			driver.get(URL);
 			Thread.sleep(SLEEP_DURATION);
 
-			driver.findElement(By.id("admin")).click();
-			Thread.sleep(SLEEP_DURATION);
-
-			driver.findElement(By.id("AddStudent")).click();
+			driver.findElement(By.id("addStudent")).click();
 			Thread.sleep(SLEEP_DURATION);
 
 
@@ -122,15 +119,13 @@ public class SeleniumTestStudent {
 			driver.get(URL);
 			Thread.sleep(SLEEP_DURATION);
 			
-			driver.findElement(By.id("admin")).click();
-			Thread.sleep(SLEEP_DURATION);
-
-	
 			driver.findElement(By.id("editStudent")).click();
 			Thread.sleep(SLEEP_DURATION);
 
 	
-			driver.findElement(By.id("name")).sendKeys(TEST_NAME);
+			driver.findElement(By.id("StudentName")).sendKeys(TEST_NAME);
+			driver.findElement(By.id("StudentEmail")).sendKeys(TEST_USER_EMAIL);
+			driver.findElement(By.id("StudentStatus")).sendKeys("0");
 			driver.findElement(By.id("update")).click();
 			Thread.sleep(SLEEP_DURATION);
 	
@@ -171,8 +166,6 @@ public class SeleniumTestStudent {
 		try {
 	
 			driver.get(URL);
-			Thread.sleep(SLEEP_DURATION);
-			driver.findElement(By.id("admin")).click();
 			Thread.sleep(SLEEP_DURATION);
 	
 			driver.findElement(By.id("deleteStudent")).click();
