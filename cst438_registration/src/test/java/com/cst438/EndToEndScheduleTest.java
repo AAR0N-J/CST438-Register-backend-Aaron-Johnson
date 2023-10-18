@@ -35,7 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class EndToEndScheduleTest {
 
-	public static final String CHROME_DRIVER_FILE_LOCATION = "C:/chromedriver_win32/chromedriver.exe";
+	public static final String CHROME_DRIVER_FILE_LOCATION = "/Users/tiki/Documents/Software engineering/chromedriver-mac-x64/chromedriver";
 
 	public static final String URL = "http://localhost:3000";
 

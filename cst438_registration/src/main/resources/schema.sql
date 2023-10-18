@@ -1,6 +1,6 @@
 CREATE TABLE course (
   year int  NOT NULL,
-  semester varchar(10) NOT NULL,
+  semester varchar(10) NOT NULL, 
   course_id int  NOT NULL,
   section int  NOT NULL,
   title varchar(255) NOT NULL,
