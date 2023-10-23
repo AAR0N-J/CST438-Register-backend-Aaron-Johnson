@@ -9,7 +9,7 @@ CREATE TABLE course (
   room varchar(20) DEFAULT NULL,
   instructor varchar(50) DEFAULT NULL,
   start date DEFAULT NULL,
-  end date DEFAULT NULL,
+  end date DEFAULT NULL, 
   PRIMARY KEY (course_id)
 );
 
@@ -34,3 +34,13 @@ CREATE TABLE enrollment (
   FOREIGN KEY (student_id) REFERENCES student (student_id) on delete cascade 
 );
 
+reate table user_table (
+	id identity primary key,  
+	alias varchar(25) unique, 
+	email varchar(25) unique,
+	first_name varchar(25), 
+	last_name varchar(25), 
+	level varchar(25),
+	password varchar(100), 
+	role varchar(25)
+);
